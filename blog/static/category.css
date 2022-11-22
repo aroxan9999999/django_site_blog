@@ -1,0 +1,16 @@
+.box{
+    margin: 0px;
+    margin-bottom: 15px;
+}
+._img{
+   margin-right: 15px;
+   height: 250px;
+   with: 150px;
+   background-repeat: no-repeat;
+   background-position: center;
+   background-size: contain;
+}
+
+.title{
+    text-align: center;
+}

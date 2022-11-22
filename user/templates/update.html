@@ -1,0 +1,22 @@
+{% extends "index.html" %}
+{% block title %}
+	<title>настройки</title>
+{% endblock %}
+
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'user.css/' %}">
+{% endblock %}
+
+{% block content %}
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">сохранить</button>
+</form>
+<a href="{% url 'delete' %}"><button class="delete" style="margin-top: 10px; margin-left: 673px;">удалить акаунт</button></a>
+
+{% endblock %}
+
+

@@ -1,0 +1,80 @@
+{% extends "index.html" %}
+{% block title %}
+<title>{{ title }}</title>
+{% endblock %}
+
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'detail.css' %}">
+{% endblock %}
+
+
+{% block content %}
+
+<div class="box">
+    {% for post, comment in post.items %}
+
+    <a class="title" style='text-decoration: none;' href="{% url 'post_detail' post_pk=post.0.pk %}">
+        <h3 style="margin-top: 17px;">{{ post.0.title }}</h3>
+    </a>
+    <a id="{{ post.0.pk }}" href="{{ post.0.photo.url }}">
+        <div class="_img" style="background-image: url({{ post.0.photo.url }}); margin-top: 7px;"></div>
+    </a>
+    <div style="margin-left: 17px; margin-top: 17px; margin-bottom: 37px;">
+        <form class="like" action="" method="post">
+            {% csrf_token %}
+            <input class="none" type="text" name="like" value="like {{ post.0.pk }}"><br><br>
+            <button type="submit" id="b{{ post.0.pk }}">
+                <img style="color: green; border-radius: 99px;" src="{% static 'icons/icons8-facebook-like-50.png' %}">
+            </button>
+        </form>
+        <strong style="font-size: 25px; margin-right: 15px;">{{ post.1 }}</strong>
+
+        <form class="like" action="" method="post">
+            {% csrf_token %}
+            <input class="none" type="text" name="dislike" value="dislike {{ post.0.pk }}"><br><br>
+            <button class="b_dislike" type="submit" id="b2{{ post.0.pk }}">
+                <img style="border-radius: 95px; height: 50px;" src="{% static 'icons/icons8-thumbs-60.png' %}">
+            </button>
+        </form>
+        <strong style="font-size: 25px;">{{ post.2 }}</strong>
+        <h3>{{ post.0.author }}</h3>
+        <p><em>{{ post.0.publish_date }}</em></p>
+        <p style="font-weight: bold;" class="text">
+            {{ post.0.text }}
+        </p>
+
+                <a style="padding-top: 5px; display: block; height: 25px; width: 165px; border:1px solid gray;
+                 border-radius: 35px; background-color: white; text-decoration: none; color: black; padding-top: 10px;
+                 padding-left: 5px; margin-left: 17px; margin-top: 5px; padding-top: 1px"
+           href="{% url 'coment_post' post_pk=post.0.pk %}">дабавить коментарии</a>
+        <div style="min-height: 20px; max-width: 407px; margin-left: 27px;">
+            {% for comment in comment %}
+
+            <p style=" max-width: 307px; min-width: 100px; border-radius: 17px; padding-left: 9px; margin-top: 3px;
+                    margin-bottom: 1px;
+                    background: -webkit-linear-gradient(45deg, rgb(157, 74, 74), rgb(123, 82, 182), rgb(115, 128, 44));
+                    background: -moz-linear-gradient(45deg, rgb(157, 74, 74), rgb(123, 82, 182), rgb(115, 128, 44));
+                    background: linear-gradient(45deg, rgb(157, 74, 74), rgb(123, 82, 182), rgb(115, 128, 44));">
+                <em style="color: white; text-align: left; padding-left: 1px;;">
+                    {{ comment.author }}-{{comment.time}}</em> <br> {{ comment.text }}
+            </p>
+
+
+            {% endfor %}
+
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% if element %}
+
+<script>
+       const el = document.getElementById('{{ element }}');
+       el.scrollIntoView({block: "center", inline: "center"});
+</script>
+
+{% endif %}
+{% endblock %}
+

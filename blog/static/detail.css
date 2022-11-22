@@ -1,0 +1,60 @@
+body{
+    position: relative;
+}
+
+.box{
+    margin-left: 545px;
+}
+
+
+._img{
+   background-repeat: no-repeat;
+   background-position: center;
+   background-size: contain;
+   padding-left: 50px;
+   min-height: 400px;
+   max-width: 357px;
+   max-height: 700px
+}
+
+.text{
+    width: 350px;
+}
+
+.like{
+    display: inline-block;
+}
+
+.none{
+    display: none;
+}
+
+button{
+    border: none;
+}
+img:hover{
+    opacity: 0.5;
+}
+
+.title h3{
+    color: black;
+    margin-bottom: 5px;
+    width: 390px;
+    text-align: center;
+    font-weight: bolder;
+}
+
+h3:hover{
+    color: rgb(148, 0, 227);
+}
+
+.du{
+    display: inline-block;
+    margin-left: 259px;
+}
+
+textarea{
+    width: 728px;
+    height: 172px;
+}
+

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'nav.css' %}">
+    {% block title %}
+    {% endblock %}
+
+    {% block css %}
+    {% endblock %}
+
+</head>
+<body>
+    <nav class="nav">
+        {% if user.is_authenticated %}
+        <div class="menu"><a href="{% url 'post_list' %}">главная</a></div>
+        <div class="menu"><a href="{% url 'my_post' %}">мои посты</a></div>
+        <div class="menu"><a href="{% url 'top_post' %}">топ посты</a></div>
+        <div class="menu"><a href="{% url 'new_post' %}">дабавить пост</a></div>
+        <div class="menu"><a href="{% url 'update' %}">настройки</a></div>
+        <div class="menu"><a href="{% url 'category' %}">категория</a></div>
+        <div class="menu"><a href="{% url 'logout' %}">выйти</a></div>
+        {% else %}
+        <div class="menu"><a href="{% url 'login' %}">войти</a></div>
+        <div class="menu"><a href="{% url 'register' %}">зарегестрироватся</a></div>
+        {% endif %}
+
+    </nav>
+
+        {% if messages %}
+            <div class="alert">
+            {% for message in messages %}
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}<style>
+                    .alert {
+                        background-color: red;
+                           }
+                </style>{% endif %}
+                {{ message }}
+            {% endfor %}
+        </ul>
+            </div>
+    {% endif %}
+    <style>
+         .alert {
+          padding: 20px;
+          background: -webkit-linear-gradient(45deg, rgb(225, 125, 12) 10%, rgb(227, 217, 218));
+          background: -moz-linear-gradient(45deg, rgb(225, 125, 12) 10%, rgb(227, 217, 218));
+          background: linear-gradient(45deg, rgb(225, 125, 12) 10%, rgb(227, 217, 218));
+          color: white;
+          margin-bottom: 15px;
+          font-weight: bolder;
+        }
+
+        /* The close button */
+        .closebtn {
+          margin-left: 15px;
+          color: white;
+          font-weight: bold;
+          float: right;
+          font-size: 22px;
+          line-height: 20px;
+          cursor: pointer;
+          transition: 0.3s;
+        }
+
+        /* When moving the mouse over the close button */
+        .closebtn:hover {
+          color: black;
+        }
+    </style>
+{% if user.is_authenticated %}
+    {% block content %}
+
+    {% endblock %}
+{% endif %}
+
+{% block register %}
+
+{% endblock %}
+
+</body>
+</html>

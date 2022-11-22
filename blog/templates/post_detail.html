@@ -1,0 +1,118 @@
+{% extends "index.html" %}
+    {% block  title %}
+    	<title>detail {{ post.title }}</title>
+    {% endblock %}
+
+    {% block  css %}
+    	<link rel="stylesheet" href="../static/detail.css">
+    {% endblock %}
+    {% load static %}
+
+{% block content %}
+
+<style>
+    .nav {
+        display: none;
+            }
+</style>
+<nav>
+        <div class="menu"><a href="{% url 'post_list' %}">вернутся</a></div>
+        {% if post.author == request.user %}
+        <div class="menu"><a href="{% url 'post_list' %}">удалть</a></div>
+        <div class="menu"><a href="{% url 'update_post' post_pk=post.pk %}">обнавить</a></div>
+        {% endif %}
+        {% if post.author != request.user and view %}
+        <div class="menu"><a href="{% url 'user_post' user_name=post.author.username %}">посты {{ post.author.username }}</a></div>
+        {% endif %}
+</nav>
+<a style="text-decoration: none;" class="title" href="{% url 'post_list' %}">
+</a>
+
+<div class="box" style="margin: 0; margin-left: 301px; margin-top: 0px; margin-bottom: 21px;">
+    <a href="{{ post.photo.url }}">
+        <div style="background-image: url({{ post.photo.url }});
+                              background-repeat: no-repeat;
+                              background-position: center;
+                              background-size: contain;
+                              padding-left: 50px;
+                              border: 0;
+                              max-height: 1950px; min-height: 750px; width: 757px">
+
+        </div>
+    </a>
+
+     <div style="margin-left: 17px;">
+        <form style="margin-left: 100px; display: inline-block;" class="like" action="" method="post">
+            {% csrf_token %}
+            <input class="none" type="text" name="like" value="like {{ post.pk }}"><br><br>
+            <button type="submit" >
+                <img style="color: green; border-radius: 99px;" src="{% static 'icons/icons8-facebook-like-50.png' %}">
+            </button>
+        </form>
+        <strong style="font-size: 25px; margin-right: 15px;">{{ post.like }}</strong>
+
+        <form class="like" style="display: inline-block;" action="" method="post">
+            {% csrf_token %}
+            <input class="none" type="text" name="dislike" value="dislike {{ post.pk }}"><br><br>
+            <button class="b_dislike" type="submit"">
+                <img style="border-radius: 95px; height: 50px;" src="{% static 'icons/icons8-thumbs-60.png' %}">
+            </button>
+        </form>
+        <strong style="font-size: 25px;">{{ dislike }}</strong>
+        <h3>{{ post.author }}</h3>
+        <p><em>{{ post.publish_date }}</em></p>
+        <p style="font-weight: bold;" class="text">
+            {{ post.text }}
+        </p>
+
+         {% if activated %}
+
+             <style>
+                 .comment_post {
+                     display:none;
+                 }
+             </style>
+
+            <form style="margin-bottom: 20px;" action="" method="post">
+                {% csrf_token %}
+                {{ coment_form.as_p }}
+                <button type="submit">сохранить</button>
+            </form>
+         <a style=" display: block; color: black; height: 20px; width: 99px; border: 1px solid green; text-align: center;
+                    text-decoration: none;" href="{% url 'post_detail' post_pk=post.pk %}">отменить</a>
+        {% endif %}
+
+
+        <div class="comment_post" style="min-height: 27px; max-width: 407px; margin-left: 27px;">
+            {% for comment in comment %}
+
+            <p style="max-width: 907px; min-width: 100px; border-radius: 17px; padding-left: 9px; margin-top: 3px;
+                    margin-bottom: 1px;
+                    background: -webkit-linear-gradient(45deg, rgb(157, 74, 74), rgb(123, 82, 182), rgb(115, 128, 44));
+                    background: -moz-linear-gradient(45deg, rgb(157, 74, 74), rgb(123, 82, 182), rgb(115, 128, 44));
+                    background: linear-gradient(45deg, rgb(157, 74, 74), rgb(123, 82, 182), rgb(115, 128, 44));">
+                <em style="color: white; text-align: left; padding-left">
+
+                    {{ comment.author }}-{{comment.time}}</em> <br> {{ comment.text }}
+            </p>
+
+
+            {% endfor %}
+             <a style=" padding-top: 5px; display:block; height: 25px; width: 165px; border:1px solid gray;
+                 border-radius: 35px; background-color: white; text-decoration: none; color: black; padding-top: 10px;
+                 padding-left: 5px; margin-left: 17px; margin-top: 5px; padding-top: 1px"
+                href="{% url 'coment_post' post_pk=post.pk %}">дабавить коментарии
+             </a>
+
+        </div>
+    </div>
+</div>
+
+<style>
+    .none {
+        display: none;
+    }
+</style>
+
+{% endblock %}
+

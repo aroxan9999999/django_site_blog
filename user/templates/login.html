@@ -1,0 +1,18 @@
+{% extends "index.html" %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'user.css/' %}">
+{% endblock %}
+
+{% block title %}
+	<title>Авторизация</title>
+{% endblock %}
+
+{% block register %}
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">войти</button>
+    </form>
+{% endblock %}
+<div><h3>hello<style>h3 {color: red;}</style></h3></div>

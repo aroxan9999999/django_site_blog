@@ -1,0 +1,36 @@
+/* line 1, ../../nav/sass/style.sass */
+body {
+  margin: 0;
+}
+
+/* line 4, ../../nav/sass/style.sass */
+nav {
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 0px;
+  max-width: 1550px;
+  height: 55px;
+  border: 1px solid black;
+  font-weight: bold;
+}
+
+/* line 14, ../../nav/sass/style.sass */
+nav div {
+  margin-right: 29px;
+  font-size: 19px;
+}
+
+.menu a{
+    text-decoration: none;
+    color: black;
+}
+
+/* line 17, ../../nav/sass/style.sass */
+nav .menu:hover {
+  font: 1em sans-serif;
+}
+
+/*# sourceMappingURL=style.css.map */
+
