@@ -12,4 +12,6 @@ urlpatterns = [
     path("category", category, name="category"),
     path("category/<str:name>", category_post, name="category_post"),
     path("user_post/<str:user_name>", user_post, name="user_post"),
+    path("post_delete/<int:post_pk>", post_delete, name="post_delete"),
+    path("post_publish/<int:post_pk>", post_publish, name="post_publish"),
 ]

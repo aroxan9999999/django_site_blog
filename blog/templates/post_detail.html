@@ -17,8 +17,11 @@
 </style>
 <nav>
         <div class="menu"><a href="{% url 'post_list' %}">вернутся</a></div>
+        {% if post.author == request.user and post.published == False %}
+        <div class="menu"><a href="{% url 'post_publish' post_pk=post.pk %}">опубликовать</a></div>
+        {% endif %}
         {% if post.author == request.user %}
-        <div class="menu"><a href="{% url 'post_list' %}">удалть</a></div>
+        <div class="menu"><a href="{% url 'post_delete' post_pk=post.pk %}">удалть</a></div>
         <div class="menu"><a href="{% url 'update_post' post_pk=post.pk %}">обнавить</a></div>
         {% endif %}
         {% if post.author != request.user and view %}

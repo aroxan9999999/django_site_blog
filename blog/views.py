@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.contrib import messages
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -13,6 +14,7 @@ __view_post = {"view": True}
 
 def _like(request, value):
     __like, _pk = value.split()
+    print(__like, _pk)
     _post = Post.objects.get(pk=_pk)
     if __like == "like":
         like = Like.objects.filter(_like=request.user, post__pk=_pk)
@@ -65,7 +67,7 @@ def post_list(request):
     title = "главная страница"
     element = __post_like(request)
     __view_post["view"] = True
-    _post = Post.objects.all().order_by("-publish_date")
+    _post = Post.objects.filter(published=True).order_by("-publish_date", "-created_date")
     post = {}
     for key in _post:
         like = (key, Like.objects.filter(post=key).exclude(_like=None).count(),
@@ -81,7 +83,8 @@ def post_detail(request, post_pk):
     comment = Comment.objects.filter(post=detail).order_by("-date")
     dislike = Like.objects.filter(post=detail).exclude(_dislike=None).count()
     __elem["element"] = post_pk
-    return render(request, "post_detail.html", context={"post": detail, "comment": comment, "dislike": dislike, "view": view})
+    return render(request, "post_detail.html",
+                  context={"post": detail, "comment": comment, "dislike": dislike, "view": view})
 
 
 def new_post(request):
@@ -98,6 +101,14 @@ def new_post(request):
     return render(request, "new_post.html", context={"form": form, "operation": operation})
 
 
+def post_publish(request, post_pk):
+    post = Post.objects.get(pk=post_pk)
+    post.published = True
+    post.save()
+    messages.success(request, 'post published successfully.')
+    return redirect("post_detail", post_pk=post_pk)
+
+
 def post_update(request, post_pk):
     operation = "обнавить"
     post = get_object_or_404(Post, pk=post_pk)
@@ -105,7 +116,7 @@ def post_update(request, post_pk):
         form = Post_form(instance=post)
         return render(request, "new_post.html", context={"form": form, "operation": operation})
     else:
-        form = Post_form(request.POST, instance=post)
+        form = Post_form(request.POST, request.FILES, instance=post)
         if form.is_valid():
             post = form.save(commit=False)
             post.publish_date = datetime.now()
@@ -150,12 +161,13 @@ def top_post(request):
     title = "top post"
     __view_post["view"] = True
     element = __post_like(request)
-    _post = Post.objects.filter().order_by("-like")[:100]
+    _post = Post.objects.filter(published=True).order_by("-like", "-publish_date")[:100]
     post = {}
     for key in _post:
         like = (key, key.like, Like.objects.filter(post=key).exclude(_dislike=None).count())
         post[like] = Comment.objects.filter(post=key).order_by("-date")[:7]
     return render(request, "post_list.html", context={"post": post, "element": element, "title": title})
+
 
 def category(request):
     _category = []
@@ -163,6 +175,7 @@ def category(request):
         _category.append((i.name, Post.objects.filter(category=i).first()))
 
     return render(request, "category.html", context={"category": _category})
+
 
 def category_post(request, name):
     title = f"category {name}"
@@ -188,4 +201,6 @@ def user_post(request, user_name):
     return render(request, "post_list.html", context={"post": post, "element": element, "title": title})
 
 
-
+def post_delete(request, post_pk):
+    post = Post.objects.get(pk=post_pk).delete()
+    return redirect("post_list")
